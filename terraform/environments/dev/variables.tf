@@ -56,8 +56,8 @@ variable "bastion_instance_type" {
   default     = "t3.micro"
 
   validation {
-    condition     = can(regex("^t[234]\\.", var.bastion_instance_type))
-    error_message = "Bastion should use t-family instances for cost efficiency."
+    condition     = can(regex("^t[234]g?\\.", var.bastion_instance_type))
+    error_message = "Bastion should use t-family instances (t2, t3, t4, or t4g) for cost efficiency."
   }
 }
 
@@ -79,8 +79,8 @@ variable "private_vm_instance_type" {
   default     = "t3.small"
 
   validation {
-    condition     = can(regex("^t[234]\\.", var.private_vm_instance_type))
-    error_message = "Private VM should use t-family instances for cost efficiency."
+    condition     = can(regex("^t[234]g?\\.", var.private_vm_instance_type))
+    error_message = "Private VM should use t-family instances (t2, t3, t4, or t4g) for cost efficiency."
   }
 }
 
