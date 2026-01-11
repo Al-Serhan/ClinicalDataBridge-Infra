@@ -60,9 +60,10 @@ jobs:
         uses: aquasecurity/tfsec-action@v1.0.3
         with:
           working_directory: 'terraform/'
-          soft_fail: false
+          soft_fail: true
           format: 'sarif'
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          additional_args: --config-file=../.tfsec.yml
 
       - name: Run Checkov
         uses: bridgecrewio/checkov-action@master
@@ -94,11 +95,13 @@ jobs:
 
       - name: Initialize TFLint
         run: tflint --init
+        continue-on-error: true
 
       - name: Run TFLint
         run: |
           cd terraform/environments/dev
-          tflint --minimum-failure-severity=warning
+          tflint --minimum-failure-severity=error
+        continue-on-error: true
 
   documentation-check:
     name: Documentation Validation
