@@ -138,9 +138,12 @@ resource "aws_iam_instance_profile" "private_vm" {
 }
 
 # CloudWatch Log Group for Private VM
+# HIPAA requires audit logs retained for 6 years (2190 days)
+# CloudWatch retention: 365 days for active monitoring/compliance
+# TODO: Configure S3 archival with lifecycle policies for long-term retention (6+ years)
 resource "aws_cloudwatch_log_group" "private_vm" {
   name              = "/clinicaldata/private-vm-${var.environment}"
-  retention_in_days = 30
+  retention_in_days = 365
 
   tags = merge(
     var.compliance_tags,
