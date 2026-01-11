@@ -1,5 +1,5 @@
 repos:
-  # Terraform fmt - ensures consistent formatting
+  # Basic file quality checks (language-agnostic)
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
@@ -10,36 +10,11 @@ repos:
       - id: check-added-large-files
       - id: check-merge-conflict
 
-  # Terraform formatting
-  - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.86.0
-    hooks:
-      - id: terraform_fmt
-        args: [--args=-recursive]
-      - id: terraform_validate
-      - id: terraform_docs
-      - id: terraform_tflint
-        args: [--args=--minimum-failure-severity=warning]
-      - id: terraform_checkov
-        args: [--framework=terraform, --quiet, --compact]
-
-  # Security scanning with tfsec (disabled - configure in CI/CD instead)
-  # - repo: https://github.com/aquasecurity/tfsec
-  #   rev: v1.28.5
-  #   hooks:
-  #     - id: tfsec-docker
-  #       args:
-  #         - --minimum-severity=WARNING
-  #         - --format=sarif
-  #         - --config-file=.tfsec.yml
-
-  # Detect secrets (disabled by default - uncomment to enable)
-  # To enable: uncomment below and run 'detect-secrets scan > .secrets.baseline'
-  # - repo: https://github.com/Yelp/detect-secrets
-  #   rev: v1.4.0
-  #   hooks:
-  #     - id: detect-secrets
-  #       args: [--baseline, .secrets.baseline]
+  # OpenTofu/Terraform quality checks are run via Makefile instead:
+  # - make fmt      : Format code
+  # - make validate : Validate syntax
+  # - make lint     : Run tflint
+  # - make test     : Run all quality checks
 
   # Conventional commits (optional - uncomment when team grows)
   # Enforces conventional commit format: type(scope): subject

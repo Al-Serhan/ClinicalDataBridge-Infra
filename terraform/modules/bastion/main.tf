@@ -1,3 +1,14 @@
+# Terraform configuration for Bastion module
+terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.0"
+    }
+  }
+}
+
 # Data source for latest Amazon Linux 2 AMI (hardened and regularly updated)
 data "aws_ami" "amazon_linux_2" {
   most_recent = true
@@ -116,9 +127,12 @@ resource "aws_iam_instance_profile" "bastion" {
 }
 
 # CloudWatch Log Group for Bastion
+# HIPAA requires audit logs retained for 6 years
+# CloudWatch retention: 365 days for active monitoring
+# TODO: Configure S3 archival with lifecycle policies for long-term retention (6+ years)
 resource "aws_cloudwatch_log_group" "bastion" {
   name              = "/clinicaldata/bastion-${var.environment}"
-  retention_in_days = 30
+  retention_in_days = 365
 
   tags = merge(
     var.compliance_tags,

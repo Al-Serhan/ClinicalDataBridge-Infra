@@ -146,12 +146,33 @@ chmod 600 ~/.ssh/clinicaldata-key.pem
 
 ### 2. Configure Environment
 
-Edit `terraform/environments/dev/terraform.tfvars`:
+Create your environment configuration file from the example template:
+
+```bash
+# Copy the example configuration to create your own
+cp terraform/environments/dev/terraform.tfvars.example terraform/environments/dev/terraform.tfvars
+
+# Edit with your settings
+nano terraform/environments/dev/terraform.tfvars
+```
+
+Edit `terraform/environments/dev/terraform.tfvars` and set your values:
 
 ```hcl
 # IMPORTANT: Update this with your actual IP address
 admin_cidr = "YOUR_IP_ADDRESS/32"  # e.g., "203.0.113.42/32"
+
+# Find your IP address at: https://checkip.amazonaws.com
 ```
+
+**Required Variables:**
+- `admin_cidr`: Your IP address or network CIDR for Bastion SSH access
+- `ssh_key_name`: Name of your EC2 key pair (created in AWS)
+
+**Optional Variables** (have defaults):
+- `environment`: "dev" or "prod"
+- `bastion_instance_type`: "t3.micro" (cost-effective for bastion)
+- `private_vm_instance_type`: "t3.small" (adjustable for workload)
 
 ### 3. Deploy Infrastructure
 

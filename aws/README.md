@@ -6,7 +6,7 @@ This bundle contains a built executable of the AWS CLI v2.
 
 To install the AWS CLI v2, run the `install` script:
 ```
-$ sudo ./install 
+$ sudo ./install
 You can now run: /usr/local/bin/aws --version
 ```
 This will install the AWS CLI v2 at `/usr/local/bin/aws`.  Assuming
@@ -23,7 +23,7 @@ CLI v2 only for the current user, run the `install` script with the `-b`
 and `-i` options:
 ```
 $ ./install -i ~/.local/aws-cli -b ~/.local/bin
-``` 
+```
 This will install the AWS CLI v2 in `~/.local/aws-cli` and create
 symlinks for `aws` and `aws_completer` in `~/.local/bin`. For more
 information about these options, run the `install` script with `-h`:
@@ -43,7 +43,7 @@ $ sudo ./install --update
 
 ### Removing the installation
 
-To remove the AWS CLI v2, delete the its installation and symlinks:
+To remove the AWS CLI v2, delete its installation and symlinks:
 ```
 $ sudo rm -rf /usr/local/aws-cli
 $ sudo rm /usr/local/bin/aws

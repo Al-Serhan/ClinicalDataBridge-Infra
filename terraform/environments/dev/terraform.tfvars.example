@@ -1,0 +1,33 @@
+# ClinicalDataBridge Infrastructure - Development Configuration
+# Copy this file to terraform.tfvars and update values for your environment
+# IMPORTANT: terraform.tfvars is in .gitignore to protect sensitive values
+
+# Core Configuration
+environment = "dev"
+project_name = "clinicaldata"
+aws_region = "us-east-1"
+
+# Network Configuration
+vpc_cidr = "10.0.0.0/16"
+enable_flow_logs = true
+
+# Bastion Configuration
+bastion_instance_type = "t3.micro"
+# REQUIRED: Update this to your actual IP address (find it at https://checkip.amazonaws.com)
+admin_cidr = "YOUR_IP_ADDRESS/32"  # e.g., "203.0.113.42/32"
+
+# Private VM Configuration
+private_vm_instance_type = "t3.small"
+enable_encryption_at_rest = true
+enable_detailed_monitoring = true
+
+# SSH Configuration
+ssh_key_name = "clinicaldata-key"
+
+# Compliance Tagging
+compliance_tags = {
+  CostCenter     = "Medical"
+  DataResidency  = "US"
+  BackupRequired = "true"
+  Environment    = "Development"
+}
