@@ -30,33 +30,73 @@ echo "ClientAliveCountMax 2" >> /etc/ssh/sshd_config
 systemctl restart sshd
 
 # Mount and format encrypted data volume
-# Wait for volume to attach
-sleep 5
+# Wait for volume to attach with timeout and polling
+TIMEOUT=60
+ELAPSED=0
+DEVICE=""
 
-if [ -b /dev/nvme1n1 ]; then
-  DEVICE=/dev/nvme1n1
-elif [ -b /dev/xvdf ]; then
-  DEVICE=/dev/xvdf
+echo "Waiting for data volume to attach..."
+while [ $ELAPSED -lt $TIMEOUT ]; do
+  if [ -b /dev/nvme1n1 ]; then
+    DEVICE=/dev/nvme1n1
+    break
+  elif [ -b /dev/xvdf ]; then
+    DEVICE=/dev/xvdf
+    break
+  elif [ -b /dev/sdf ]; then
+    DEVICE=/dev/sdf
+    break
+  fi
+  sleep 2
+  ELAPSED=$((ELAPSED + 2))
+  echo "Still waiting for volume... (${ELAPSED}s elapsed)"
+done
+
+if [ -z "$DEVICE" ]; then
+  echo "ERROR: Data volume did not attach within ${TIMEOUT} seconds"
+  exit 1
+fi
+
+echo "Data volume found at $DEVICE"
+
+# Final verification that device is still a block device before operations
+if [ ! -b "$DEVICE" ]; then
+  echo "ERROR: Device $DEVICE is not a valid block device"
+  exit 1
+fi
+
+echo "Verified $DEVICE is a valid block device, proceeding with setup..."
+
+# Check if device already has a filesystem using blkid
+# blkid returns exit code 2 if no filesystem is found
+if ! blkid "$DEVICE" > /dev/null 2>&1; then
+  echo "No existing filesystem detected, creating ext4 filesystem on $DEVICE..."
+  mkfs -t ext4 "$DEVICE"
 else
-  DEVICE=/dev/sdf
-fi
-
-# Create partition if it doesn't exist
-if ! sudo parted -s $DEVICE print | grep -q "Partition Table"; then
-  sudo parted -s $DEVICE mklabel gpt
-fi
-
-# Create filesystem if not already present
-if ! sudo blkid $DEVICE || ! sudo blkid $DEVICE | grep -q "TYPE"; then
-  sudo mkfs -t ext4 $DEVICE
+  FSTYPE=$(blkid -s TYPE -o value "$DEVICE" 2>/dev/null || echo "unknown")
+  echo "Existing filesystem detected: $FSTYPE on $DEVICE"
 fi
 
 # Create mount point
 mkdir -p /data
-mount $DEVICE /data
+
+# Mount the device if not already mounted
+if ! mountpoint -q /data; then
+  mount $DEVICE /data
+  echo "Mounted $DEVICE to /data"
+else
+  echo "/data is already mounted"
+fi
 
 # Add to fstab for persistent mounting using UUID (more reliable than device names)
-echo "UUID=$(blkid -s UUID -o value $DEVICE) /data ext4 defaults,nofail 0 2" >> /etc/fstab
+# Check if this mount point is already in fstab to avoid duplicates
+UUID=$(blkid -s UUID -o value $DEVICE)
+if ! grep -qs "UUID=$UUID" /etc/fstab && ! grep -qs "/data" /etc/fstab; then
+  echo "UUID=$UUID /data ext4 defaults,nofail 0 2" >> /etc/fstab
+  echo "Added /data mount entry to /etc/fstab"
+else
+  echo "/data entry already exists in /etc/fstab, skipping"
+fi
 
 # Set secure permissions on data directory
 chmod 750 /data
@@ -107,6 +147,13 @@ EOF
 chmod +x /usr/local/bin/aide-check.sh
 
 # Schedule daily file integrity checks
-echo "0 2 * * * /usr/local/bin/aide-check.sh" | crontab -
+# Append to existing crontab without overwriting other entries
+CRON_ENTRY="0 2 * * * /usr/local/bin/aide-check.sh"
+if ! crontab -l 2>/dev/null | grep -qF "/usr/local/bin/aide-check.sh"; then
+  (crontab -l 2>/dev/null || true; echo "$CRON_ENTRY") | crontab -
+  echo "Added AIDE check to crontab"
+else
+  echo "AIDE check already exists in crontab, skipping"
+fi
 
 echo "Private VM hardening complete - PHI data security measures enabled"

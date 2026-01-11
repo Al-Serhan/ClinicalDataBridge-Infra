@@ -31,7 +31,7 @@ resource "aws_flow_log" "vpc" {
   traffic_type            = "ALL"
   vpc_id                  = aws_vpc.main.id
   log_destination_type    = "cloud-watch-logs"
-  log_format              = "$${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${windowstart} $${windowend} $${action} $${tcpflags} $${type} $${pkt-srcaddr} $${pkt-dstaddr} $${region} $${vpc-id} $${flow-logs-id} $${traffic-type} $${subnet-id} $${instance-id} $${interface-id} $${account-id}"
+  log_format              = "$${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${start} $${end} $${action} $${log-status} $${vpc-id} $${subnet-id} $${instance-id} $${interface-id} $${account-id} $${type} $${pkt-srcaddr} $${pkt-dstaddr} $${pkt-src-aws-service} $${pkt-dst-aws-service} $${flow-direction} $${traffic-path}"
 
   tags = merge(
     var.compliance_tags,

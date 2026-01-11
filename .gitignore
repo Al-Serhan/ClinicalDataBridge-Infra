@@ -125,3 +125,6 @@ Thumbs.db
 # TERRAFORM DOCS
 # ============================================
 *.md.tmp
+# Terraform variable files (contain sensitive data like IPs)
+terraform.tfvars
+**/terraform.tfvars
