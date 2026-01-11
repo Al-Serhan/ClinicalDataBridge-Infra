@@ -55,8 +55,8 @@ fi
 mkdir -p /data
 mount $DEVICE /data
 
-# Add to fstab for persistent mounting
-echo "$DEVICE /data ext4 defaults,nofail 0 2" >> /etc/fstab
+# Add to fstab for persistent mounting using UUID (more reliable than device names)
+echo "UUID=$(blkid -s UUID -o value $DEVICE) /data ext4 defaults,nofail 0 2" >> /etc/fstab
 
 # Set secure permissions on data directory
 chmod 750 /data
