@@ -1,0 +1,43 @@
+repos:
+  # Terraform fmt - ensures consistent formatting
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+      - id: check-merge-conflict
+
+  # Terraform formatting
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.86.0
+    hooks:
+      - id: terraform_fmt
+        args: [--args=-recursive]
+      - id: terraform_validate
+      - id: terraform_docs
+      - id: terraform_tflint
+        args: [--args=--minimum-failure-severity=warning]
+      - id: terraform_checkov
+        args: [--framework=terraform, --quiet, --compact]
+
+  # Security scanning with tfsec
+  - repo: https://github.com/aquasecurity/tfsec
+    rev: v1.28.5
+    hooks:
+      - id: tfsec-docker
+        args:
+          - --minimum-severity=WARNING
+          - --format=sarif
+
+  # Detect secrets
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        args: [--baseline, .secrets.baseline]
+
+default_language_version:
+  python: python3.11

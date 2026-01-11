@@ -1,37 +1,127 @@
-# Local .terraform directories
+# ============================================
+# TERRAFORM / OPENTOFU FILES
+# ============================================
 .terraform/
-
-# .tfstate files
+.terraform.lock.hcl
+*.tfplan
 *.tfstate
 *.tfstate.*
-
-# Crash log files
-crash.log
-crash.*.log
-
-# Exclude all .tfvars files, which are likely to contain sensitive data, such as
-# password, private keys, and other secrets. These should not be part of version 
-# control as they are data points which are potentially sensitive and subject 
-# to change depending on the environment.
-*.tfvars
-*.tfvars.json
-
-# Ignore override files as they are usually used to override resources locally and so
-# are not checked in
+.terraform.tfstate.lock.info
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
-
-# Ignore transient lock info files created by terraform apply
-.terraform.tfstate.lock.info
-
-# Include override files you do wish to add to version control using negated pattern
-# !example_override.tf
-
-# Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
-# example: *tfplan*
-
-# Ignore CLI configuration files
 .terraformrc
 terraform.rc
+crash.log
+crash.*.log
+
+# ============================================
+# SENSITIVE DATA - NEVER COMMIT!
+# ============================================
+# AWS Credentials & Keys (CRITICAL!)
+.aws/credentials
+.aws/config
+*.pem
+*.key
+*.pub
+.ssh/
+
+# Terraform variables with secrets
+# Note: tfvars files can contain sensitive data like passwords
+# Committed tfvars should use terraform.tfvars.example as template
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+# Environment files
+.env
+.env.local
+.env.*.local
+secrets/
+**/secrets/**
+.secrets.baseline
+
+# ============================================
+# IDE & EDITOR FILES
+# ============================================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+*.sublime-project
+*.sublime-workspace
+
+# ============================================
+# PYTHON ENVIRONMENT
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# ============================================
+# BUILD & OUTPUT FILES
+# ============================================
+dist/
+build/
+*.egg-info/
+*.dist-info/
+
+# ============================================
+# LOG FILES
+# ============================================
+*.log
+logs/
+.pytest_cache/
+
+# ============================================
+# TEMPORARY & OS FILES
+# ============================================
+*.tmp
+*.temp
+.tmp/
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# ============================================
+# CI/CD & SECURITY TOOLS
+# ============================================
+.pre-commit-framework/
+.checkov/
+.tfsec/
+*.sarif
+.github/workflows/*.log
+
+# ============================================
+# TERRAFORM DOCS
+# ============================================
+*.md.tmp
