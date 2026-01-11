@@ -175,4 +175,4 @@ jobs:
           if [ "${{ needs.terraform-validate.result }}" != "success" ]; then
             echo "Note: Some checks had issues (see logs above)"
           else
-            echo "All critical checks passed"
+            echo "All critical checks passed"          fi
