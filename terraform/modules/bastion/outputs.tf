@@ -1,15 +1,19 @@
 output "instance_id" {
-  value = aws_instance.bastion.id
+  description = "EC2 instance ID of the bastion host"
+  value       = aws_instance.bastion.id
 }
 
 output "public_ip" {
-  value = aws_instance.bastion.public_ip
+  description = "Public IP address of the bastion host for SSH access"
+  value       = aws_instance.bastion.public_ip
 }
 
 output "security_group_id" {
-  value = aws_security_group.bastion.id
+  description = "Security group ID attached to the bastion host"
+  value       = aws_security_group.bastion.id
 }
 
 output "bastion_hostname" {
-  value = "ec2-user@${aws_instance.bastion.public_ip}"
+  description = "SSH connection string for the bastion host (username@ip)"
+  value       = "ec2-user@${aws_instance.bastion.public_ip}"
 }

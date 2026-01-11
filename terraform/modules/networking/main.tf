@@ -20,7 +20,7 @@ resource "aws_flow_log" "vpc" {
   traffic_type            = "ALL"
   vpc_id                  = aws_vpc.main.id
   log_destination_type    = "cloud-watch-logs"
-  log_format              = "$${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${windowstart} $${windowend} $${action} $${tcpflags} $${type} $${pkt-srcaddr} $${pkt-dstaddr} $${region} $${vpc-id} $${flow-logs-id} $${traffic-type} $${subnet-id} $${instance-id} $${interface-id} $${account-id} $${tcp-flags} $${action}"
+  log_format              = "$${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${windowstart} $${windowend} $${action} $${tcpflags} $${type} $${pkt-srcaddr} $${pkt-dstaddr} $${region} $${vpc-id} $${flow-logs-id} $${traffic-type} $${subnet-id} $${instance-id} $${interface-id} $${account-id}"
 
   tags = merge(
     var.compliance_tags,
@@ -31,10 +31,13 @@ resource "aws_flow_log" "vpc" {
 }
 
 # CloudWatch Log Group for VPC Flow Logs
+# HIPAA requires audit logs retained for 6 years
+# CloudWatch retention: 365 days for active monitoring
+# TODO: Configure S3 archival with lifecycle policies for long-term retention (6+ years)
 resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
   count             = var.enable_flow_logs ? 1 : 0
   name              = "/aws/vpc/flowlogs/${var.project_name}-${var.environment}"
-  retention_in_days = 30
+  retention_in_days = 365
 
   tags = merge(
     var.compliance_tags,

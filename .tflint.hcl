@@ -34,12 +34,8 @@ rule "terraform_required_providers" {
   enabled = true
 }
 
-# Security: Ensure variables are using descriptions
-rule "terraform_documented_variables" {
-  enabled = true
-}
-
-# Disable rules that are too strict
-disable = [
-  "aws_resource_missing_tags",  # We handle tagging via modules
-]
+# Optional: Disable rules that are too strict
+# Uncomment to disable specific rules:
+# rule "aws_resource_missing_tags" {
+#   enabled = false  # We handle tagging via modules
+# }

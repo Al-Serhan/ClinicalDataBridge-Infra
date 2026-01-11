@@ -49,11 +49,20 @@ security-check:
 plan:
 	@echo "Creating execution plan for $(ENV)..."
 	cd $(TF_DIR) && tofu plan -out=tfplan
+	@echo ""
+	@echo "Plan created. Review the changes above."
+	@echo "Run 'make apply ENV=$(ENV)' to apply these changes."
 
 apply:
 	@echo "Applying infrastructure changes for $(ENV)..."
 	@echo "WARNING: This will create/modify AWS resources!"
-	cd $(TF_DIR) && tofu apply tfplan
+	@if [ ! -f "$(TF_DIR)/tfplan" ]; then \
+		echo "ERROR: No plan file found. Run 'make plan ENV=$(ENV)' first."; \
+		exit 1; \
+	fi
+	@read -p "Have you reviewed the plan? Type 'yes' to apply: " confirm && \
+	[ "$$confirm" = "yes" ] && \
+	cd $(TF_DIR) && tofu apply tfplan || echo "Cancelled"
 
 destroy:
 	@echo "DESTROYING infrastructure for $(ENV)!"

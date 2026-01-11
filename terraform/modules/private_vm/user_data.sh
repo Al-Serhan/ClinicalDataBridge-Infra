@@ -24,7 +24,6 @@ sed -i 's/#PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
 sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 sed -i 's/#X11Forwarding yes/X11Forwarding no/' /etc/ssh/sshd_config
 echo "PermitEmptyPasswords no" >> /etc/ssh/sshd_config
-echo "Protocol 2" >> /etc/ssh/sshd_config
 echo "ClientAliveInterval 300" >> /etc/ssh/sshd_config
 echo "ClientAliveCountMax 2" >> /etc/ssh/sshd_config
 

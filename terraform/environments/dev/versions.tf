@@ -1,6 +1,6 @@
 terraform {
   required_version = ">= 1.0"
-  
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -30,7 +30,6 @@ provider "aws" {
       ManagedBy           = "OpenTofu"
       DataClassification  = "PHI"
       ComplianceRequired  = "HIPAA"
-      CreatedAt          = timestamp()
     }
   }
 }

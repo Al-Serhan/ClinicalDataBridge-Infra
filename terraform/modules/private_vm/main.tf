@@ -113,7 +113,8 @@ resource "aws_iam_role_policy" "private_vm" {
           "kms:GenerateDataKey"
         ]
         Effect   = "Allow"
-        Resource = "*"
+        # Restrict to only the EBS encryption key used by this module
+        Resource = var.enable_encryption ? aws_kms_key.ebs[0].arn : ""
       }
     ]
   })

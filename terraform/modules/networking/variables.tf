@@ -1,23 +1,29 @@
 variable "project_name" {
-  type = string
+  description = "Name of the project used for resource naming and tagging"
+  type        = string
 }
 
 variable "environment" {
-  type = string
+  description = "Environment name (dev, prod) for resource naming and tagging"
+  type        = string
 }
 
 variable "vpc_cidr" {
-  type = string
+  description = "CIDR block for the VPC (e.g., 10.0.0.0/16)"
+  type        = string
 }
 
 variable "enable_flow_logs" {
-  type = bool
+  description = "Enable VPC Flow Logs for network traffic auditing and compliance"
+  type        = bool
 }
 
 variable "aws_region" {
-  type = string
+  description = "AWS region where resources will be deployed (e.g., us-east-1)"
+  type        = string
 }
 
 variable "compliance_tags" {
-  type = map(string)
+  description = "Map of compliance and regulatory tags to apply to resources"
+  type        = map(string)
 }
