@@ -1,0 +1,33 @@
+repos:
+  # Basic file quality checks (language-agnostic)
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+      - id: check-merge-conflict
+
+  # OpenTofu/Terraform quality checks are run via Makefile instead:
+  # - make fmt      : Format code
+  # - make validate : Validate syntax
+  # - make lint     : Run tflint
+  # - make test     : Run all quality checks
+
+  # Conventional commits (optional - uncomment when team grows)
+  # Enforces conventional commit format: type(scope): subject
+  # Types: feat, fix, docs, style, refactor, test, chore, ci, perf
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.0.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [--force-scope]
+        # NOTE: For solo dev, this may feel restrictive
+        # Comment out this hook if you prefer flexible commit messages
+        # Uncomment when standardization becomes important
+
+default_language_version:
+  python: python3

@@ -1,0 +1,25 @@
+# tfsec configuration for ClinicalDataBridge infrastructure
+# These exclusions are intentional design decisions
+
+exclude:
+  # Allow egress to 0.0.0.0/0 - instances need to download packages and updates
+  # This is standard practice for VMs that need internet access
+  - aws-ec2-no-public-egress-sgr
+
+  # Public subnet needs to auto-assign public IPs for bastion host
+  # This is required for SSH access to the jump host
+  - aws-ec2-no-public-ip-subnet
+
+  # VPC Flow Logs IAM policy requires wildcard for log group creation
+  # AWS-managed resource pattern requires this for dynamic log group names
+  - aws-iam-no-policy-wildcards
+
+# Set minimum severity level
+minimum_severity: HIGH
+
+# Enable specific checks that are critical for HIPAA compliance
+include:
+  - aws-ec2-enable-at-rest-encryption
+  - aws-ec2-enforce-http-token-imds
+  - aws-vpc-no-public-ingress-sgr
+  - aws-kms-auto-rotate-keys

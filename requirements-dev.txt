@@ -1,0 +1,31 @@
+# Development dependencies
+# Install with: pip install -r requirements-dev.txt
+
+# Code quality and linting
+black==24.1.1
+flake8==7.0.0
+pylint==3.0.3
+isort==5.13.2
+
+# Security scanning
+bandit==1.7.5
+safety==2.3.5
+
+# Testing
+pytest==7.4.4
+pytest-cov==4.1.0
+pytest-terraform==1.5.7
+
+# Documentation
+sphinx==7.2.6
+sphinx-rtd-theme==2.0.0
+
+# Pre-commit hooks (used by .pre-commit-config.yaml)
+pre-commit==3.6.0
+
+# Terraform tooling (note: these must also be installed via brew/apt/etc)
+# - terraform >= 1.0
+# - tflint
+# - tfsec
+# - terraform-docs
+# - checkov

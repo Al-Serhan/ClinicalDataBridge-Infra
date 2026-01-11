@@ -1,0 +1,36 @@
+# ClinicalDataBridge Infrastructure - Production Configuration
+# Copy this file to terraform.tfvars and update values for your environment
+# IMPORTANT: terraform.tfvars is in .gitignore to protect sensitive values
+# SECURITY: For production, restrict admin_cidr to specific corporate network IPs
+
+# Core Configuration
+environment = "prod"
+project_name = "clinicaldata"
+aws_region = "us-east-1"
+
+# Network Configuration
+vpc_cidr = "10.1.0.0/16"  # Different CIDR for prod
+enable_flow_logs = true   # REQUIRED for HIPAA compliance
+
+# Bastion Configuration
+bastion_instance_type = "t3.micro"
+# REQUIRED: Update this to your actual IP address or corporate network CIDR
+# For production, use a specific VPN/corporate network CIDR, NOT 0.0.0.0/0
+admin_cidr = "YOUR_CORPORATE_IP_CIDR/32"  # e.g., "203.0.113.128/25" for corporate network
+
+# Private VM Configuration
+private_vm_instance_type = "t3.small"  # Can increase for production workloads
+enable_encryption_at_rest = true       # REQUIRED for HIPAA compliance
+enable_detailed_monitoring = true       # REQUIRED for HIPAA compliance
+
+# SSH Configuration
+ssh_key_name = "clinicaldata-key"
+
+# Compliance Tagging
+compliance_tags = {
+  CostCenter     = "Medical"
+  DataResidency  = "US"
+  BackupRequired = "true"
+  Environment    = "Production"
+  Compliance     = "HIPAA"
+}

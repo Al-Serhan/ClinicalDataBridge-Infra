@@ -1,0 +1,28 @@
+# Code Owners for ClinicalDataBridge Infrastructure
+#
+# As the primary maintainer, you own all code.
+# When you add team members, update this file with their GitHub usernames.
+#
+# Syntax: <file pattern> @github-username
+# Example when adding team: /terraform/ @Al-Serhan @teammate1 @teammate2
+
+# Repository owner - full permissions
+* @Al-Serhan
+
+# Critical infrastructure (when team grows, require multiple approvals)
+/terraform/modules/ @Al-Serhan
+/terraform/environments/prod/ @Al-Serhan
+
+# Security-critical files (when team grows, require security team review)
+.pre-commit-config.yaml @Al-Serhan
+.tflint.hcl @Al-Serhan
+.gitignore @Al-Serhan
+SECURITY.md @Al-Serhan
+
+# Documentation (lower bar for changes)
+*.md @Al-Serhan
+
+# Future: When adding team members
+# /terraform/ @Al-Serhan @devops-lead
+# /terraform/environments/prod/ @Al-Serhan @security-team
+# SECURITY.md @Al-Serhan @security-team
