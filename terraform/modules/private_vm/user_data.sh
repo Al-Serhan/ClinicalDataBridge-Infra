@@ -49,11 +49,11 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
   fi
   sleep 2
   ELAPSED=$((ELAPSED + 2))
-  echo "Still waiting for volume... (${ELAPSED}s elapsed)"
+  echo "Still waiting for volume... ($${ELAPSED}s elapsed)"
 done
 
 if [ -z "$DEVICE" ]; then
-  echo "ERROR: Data volume did not attach within ${TIMEOUT} seconds"
+  echo "ERROR: Data volume did not attach within $${TIMEOUT} seconds"
   exit 1
 fi
 
