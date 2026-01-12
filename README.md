@@ -48,17 +48,17 @@ The following code has been tested and deployed in a personal AWS account. Just 
 │  │                      │  │                              │ │
 │  │  ┌────────────────┐  │  │  ┌──────────────────────┐    │ │
 │  │  │  Bastion Host  │  │  │  │ Data Processing VM   │    │ │
-│  │  │  (Jump Server) │──┼──┼─▶│ (NO PUBLIC IP)       │   │ │
-│  │  │  - SSH Access  │  │  │  │ - Air-gapped         │   │ │
-│  │  └────────────────┘  │  │  │ - Encrypted Storage  │   │ │
-│  │                      │  │  └──────────────────────┘   │ │
-│  │  NAT Gateway    ────────────────────────┐             │ │
-│  │                      │  │               │             │ │
-│  └──────────────────────┘  └───────────────┼─────────────┘ │
-│           │                                 │              │
-│     Internet Gateway              VPC Flow Logs            │
-│                                                            │
-└────────────────────────────────────────────────────────────┘
+│  │  │  (Jump Server) │──┼──┼> │ (NO PUBLIC IP)       │    │ │
+│  │  │  - SSH Access  │  │  │  │ - Air-gapped         │    │ │
+│  │  └────────────────┘  │  │  │ - Encrypted Storage  │    │ │
+│  │                      │  │  └──────────────────────┘    │ │
+│  │  NAT Gateway    ────────────────────────┐              │ │
+│  │                      │  │               │              │ │
+│  └──────────────────────┘  └───────────────┼──────────────┘ │
+│           │                                │                │
+│     Internet Gateway              VPC Flow Logs             │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 **Components:**
@@ -132,13 +132,13 @@ brew install opentofu awscliv2 tflint tfsec checkov terraform-docs pre-commit
 
 ```bash
 # Configure AWS CLI
-aws configure --profile alan-tofu
+aws configure --profile <IAM-USER-HERE>
 # Enter: Access Key ID, Secret Access Key, Region (us-east-1), Output format (json)
 
 # Verify credentials
-aws sts get-caller-identity --profile alan-tofu
+aws sts get-caller-identity --profile <IAM-USER-HERE>
 
-# Create SSH key pair
+# Create your SSH key pair
 mkdir -p ~/.ssh
 aws ec2 create-key-pair --key-name clinicaldata-key --region us-east-1 \
   --query 'KeyMaterial' --output text > ~/.ssh/clinicaldata-key.pem
