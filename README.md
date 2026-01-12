@@ -1,6 +1,6 @@
 # ClinicalDataBridge Infrastructure
 
-Production-ready OpenTofu/Terraform infrastructure for deploying a secure, HIPAA-compliant medical data processing environment on AWS.
+Production-ready OpenTofu infrastructure for deploying a secure, HIPAA-compliant medical data processing environment on AWS.
 
 ## Table of Contents
 
@@ -22,7 +22,8 @@ Production-ready OpenTofu/Terraform infrastructure for deploying a secure, HIPAA
 
 ## Overview
 
-This repository contains OpenTofu/Terraform configuration for deploying a secure, two-tier medical data processing infrastructure. The design follows security-first principles with HIPAA compliance considerations built-in.
+This repo contains OpenTofu configuration for deploying a secure, two-tier medical data processing infrastructure. The design follows security-first principles with HIPAA compliance considerations built-in.
+The following code has been tested and deployed in a personal AWS account. Just follow the steps below using your own credentials if you want to test this yourself.
 
 **Key Features:**
 - Two-tier architecture (public bastion + air-gapped private VM)
@@ -40,13 +41,13 @@ This repository contains OpenTofu/Terraform configuration for deploying a secure
 ┌─────────────────────────────────────────────────────────────┐
 │                    AWS VPC (10.0.0.0/16)                    │
 ├─────────────────────────────────────────────────────────────┤
-│                                                               │
+│                                                             │
 │  ┌──────────────────────┐  ┌──────────────────────────────┐ │
 │  │  PUBLIC SUBNET       │  │  PRIVATE SUBNET              │ │
 │  │  (10.0.0.0/24)       │  │  (10.0.1.0/24)               │ │
 │  │                      │  │                              │ │
-│  │  ┌────────────────┐  │  │  ┌──────────────────────┐   │ │
-│  │  │  Bastion Host  │  │  │  │ Data Processing VM   │   │ │
+│  │  ┌────────────────┐  │  │  ┌──────────────────────┐    │ │
+│  │  │  Bastion Host  │  │  │  │ Data Processing VM   │    │ │
 │  │  │  (Jump Server) │──┼──┼─▶│ (NO PUBLIC IP)       │   │ │
 │  │  │  - SSH Access  │  │  │  │ - Air-gapped         │   │ │
 │  │  └────────────────┘  │  │  │ - Encrypted Storage  │   │ │
@@ -54,10 +55,10 @@ This repository contains OpenTofu/Terraform configuration for deploying a secure
 │  │  NAT Gateway    ────────────────────────┐             │ │
 │  │                      │  │               │             │ │
 │  └──────────────────────┘  └───────────────┼─────────────┘ │
-│           │                                 │               │
+│           │                                 │              │
 │     Internet Gateway              VPC Flow Logs            │
-│                                                               │
-└─────────────────────────────────────────────────────────────┘
+│                                                            │
+└────────────────────────────────────────────────────────────┘
 ```
 
 **Components:**
